@@ -102,10 +102,13 @@
                 align-items: center;
             }
             .author {
-                color: #ccc;
+                color: #858585;
                 position: absolute;
                 right: 10px;
                 bottom: 10px;
+            }
+            .author:hover {
+                color: #409eff;
             }
             #app {
                 display: block;
@@ -217,11 +220,7 @@
                         >
                         </el-date-picker>
                         <el-tooltip content="清空总月份">
-                            <i
-                                class="el-icon-close icon-btn"
-                                style="color: #e47470"
-                                @click="forms.totalMonths = []"
-                            ></i>
+                            <i class="el-icon-close icon-btn" style="color: #e47470" @click="forms.totalMonths = []"></i>
                         </el-tooltip>
                     </div>
                 </el-form-item>
@@ -229,11 +228,7 @@
                     <div class="form-item-line">
                         <el-input v-model="forms.totalMoney" type="number"></el-input>
                         <el-tooltip content="清空总金额">
-                            <i
-                                class="el-icon-close icon-btn"
-                                style="color: #e47470"
-                                @click="forms.totalMoney = ''"
-                            ></i>
+                            <i class="el-icon-close icon-btn" style="color: #e47470" @click="forms.totalMoney = ''"></i>
                         </el-tooltip>
                     </div>
                 </el-form-item>
@@ -253,18 +248,10 @@
                             ></i>
                         </el-tooltip>
                         <el-tooltip content="添加时间段">
-                            <i
-                                class="el-icon-plus icon-btn"
-                                style="color: #409eff"
-                                @click="addRow(person)"
-                            ></i>
+                            <i class="el-icon-plus icon-btn" style="color: #409eff" @click="addRow(person)"></i>
                         </el-tooltip>
                         <el-tooltip content="删除人员">
-                            <i
-                                class="el-icon-delete icon-btn"
-                                style="color: #e47470"
-                                @click="deletePerson(index)"
-                            ></i>
+                            <i class="el-icon-delete icon-btn" style="color: #e47470" @click="deletePerson(index)"></i>
                         </el-tooltip>
                     </div>
                     <div class="day-line" v-for="(day, j) in person.dayList" :key="j">
@@ -289,34 +276,21 @@
                 </el-form-item>
                 <el-form-item style="display: flex; justify-content: center; margin-top: 30px">
                     <el-popconfirm title="是否确认清空人员？" @confirm="clearPerson">
-                        <el-button type="danger" @click="" plain round slot="reference"
-                            >清除人员</el-button
-                        >
+                        <el-button type="danger" @click="" plain round slot="reference">清除人员</el-button>
                     </el-popconfirm>
                     <el-popconfirm title="是否确认清空数据？" @confirm="clearAllData">
-                        <el-button
-                            type="default"
-                            plain
-                            round
-                            style="margin-left: 8px"
-                            slot="reference"
-                            >清空数据</el-button
-                        >
+                        <el-button type="default" plain round style="margin-left: 8px" slot="reference">清空数据</el-button>
                     </el-popconfirm>
                     <el-popover v-model="addVisible">
                         <div class="add">
                             <el-input v-model="currentAddName" placeholder="请输入姓名"></el-input>
-                            <el-button type="primary" @click="onAdd" style="margin-left: 20px" round
-                                >确定</el-button
-                            >
+                            <el-button type="primary" @click="onAdd" style="margin-left: 20px" round>确定</el-button>
                         </div>
-                        <el-button style="margin-left: 10px" type="primary" slot="reference" round
-                            >新增人员</el-button
-                        >
+                        <el-button style="margin-left: 10px" type="primary" slot="reference" round>新增人员</el-button>
                     </el-popover>
                 </el-form-item>
             </el-form>
-            <span class="author">By Tonny</span>
+            <a class="author" href="https://github.com/tonny3548/dormitory-cost-calculator">By Tonny（Github）</a>
         </div>
     </body>
 
@@ -343,21 +317,14 @@
                     const personList = this.personList.map((person) => ({ ...person, money: 0 }));
                     if (this.forms.totalMonths.length === 2) {
                         /** 合计的天数 */
-                        const sumDay = moment(this.forms.totalMonths[1])
-                            .add(1, "month")
-                            .diff(moment(this.forms.totalMonths[0]), "days");
+                        const sumDay = moment(this.forms.totalMonths[1]).add(1, "month").diff(moment(this.forms.totalMonths[0]), "days");
                         /** 合计的天数(只包含有人员入住的时间) */
                         const sumList = [];
                         let startDate = moment(this.forms.totalMonths[0]);
                         for (let index = 0; index < sumDay; index++) {
                             /** 过滤出有人员入住的时间 */
                             const hasPersonList = personList.filter(({ dayList }) =>
-                                dayList.some(
-                                    ({ value: days }) =>
-                                        days[0] &&
-                                        days[1] &&
-                                        startDate.isBetween(days[0], days[1], "day", "[]")
-                                )
+                                dayList.some(({ value: days }) => days[0] && days[1] && startDate.isBetween(days[0], days[1], "day", "[]"))
                             );
                             // 当前时间存在人员入住
                             if (!_.isEmpty(hasPersonList)) {
@@ -442,12 +409,7 @@
                     }
                     person.dayList = [
                         {
-                            value: [
-                                this.forms.totalMonths[0],
-                                moment(this.forms.totalMonths[1])
-                                    .endOf("month")
-                                    .format("YYYY-MM-DD"),
-                            ],
+                            value: [this.forms.totalMonths[0], moment(this.forms.totalMonths[1]).endOf("month").format("YYYY-MM-DD")],
                         },
                     ];
                 },
